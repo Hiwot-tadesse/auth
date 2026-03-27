@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 // @ts-ignore
 import { Home, LogOut, User, Mail, MapPin, Calendar, Edit, Compass, Sparkles, CheckCircle } from "lucide-react";
@@ -5,14 +6,14 @@ import { Home, LogOut, User, Mail, MapPin, Calendar, Edit, Compass, Sparkles, Ch
 interface Props {
   user: any;
   type: "login" | "signup";
+  onLogout: () => void;
 }
 
-export default function Welcome({ user, type }: Props) {
+export default function Welcome({ user, type, onLogout }: Props) {
   const [showCelebration] = useState(type === "signup");
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
+    onLogout();
   };
 
   // Format date nicely
@@ -31,11 +32,15 @@ export default function Welcome({ user, type }: Props) {
       overflow: "hidden",
       background: "linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #f5576c 100%)",
       backgroundSize: "200% 200%",
-      animation: "gradient-shift 18s ease infinite",
+      // ✅ FIX: Use separate animation properties (not shorthand)
+      animationName: "gradient-shift",
+      animationDuration: "18s",
+      animationTimingFunction: "ease",
+      animationIterationCount: "infinite",
       fontFamily: "system-ui, -apple-system, 'Segoe UI', sans-serif"
     }}>
       
-      {/* 🌊 Animated Background Elements */}
+      {/* 🌊 Animated Background Elements - Fixed Animations */}
       <div style={{
         position: "absolute",
         top: "10%",
@@ -45,7 +50,11 @@ export default function Welcome({ user, type }: Props) {
         background: "radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)",
         borderRadius: "50%",
         filter: "blur(25px)",
-        animation: "float 9s ease-in-out infinite",
+        // ✅ Separate animation properties
+        animationName: "float",
+        animationDuration: "9s",
+        animationTimingFunction: "ease-in-out",
+        animationIterationCount: "infinite",
         pointerEvents: "none"
       }} />
       <div style={{
@@ -57,11 +66,16 @@ export default function Welcome({ user, type }: Props) {
         background: "radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)",
         borderRadius: "50%",
         filter: "blur(20px)",
-        animation: "float 7s ease-in-out infinite reverse",
+        // ✅ Separate animation properties with direction
+        animationName: "float",
+        animationDuration: "7s",
+        animationTimingFunction: "ease-in-out",
+        animationIterationCount: "infinite",
+        animationDirection: "reverse",
         pointerEvents: "none"
       }} />
 
-      {/* ✨ Celebration Confetti (for new signups) */}
+      {/* ✨ Celebration Confetti (for new signups) - Fixed Animation */}
       {showCelebration && (
         <div style={{
           position: "absolute",
@@ -73,31 +87,47 @@ export default function Welcome({ user, type }: Props) {
           justifyContent: "center",
           gap: "8px",
           pointerEvents: "none",
-          animation: "fadeSlideDown 0.6s ease-out forwards"
+          // ✅ Separate animation properties
+          animationName: "fadeSlideDown",
+          animationDuration: "0.6s",
+          animationTimingFunction: "ease-out",
+          animationFillMode: "forwards"
         }}>
-          {[...Array(5)].map((_, i) => (
-            <Sparkles 
-              key={i} 
-              size={24 + i * 4} 
-              color="#fff" 
-              style={{
-                animation: `bounce ${0.5 + i * 0.1}s ease-in-out infinite`,
-                animationDelay: `${i * 0.15}s`,
-                opacity: 0.9
-              }} 
-            />
-          ))}
+          {[...Array(5)].map((_, i) => {
+            const duration = 0.5 + i * 0.1;
+            const delay = i * 0.15;
+            return (
+              <Sparkles 
+                key={i} 
+                size={24 + i * 4} 
+                color="#fff" 
+                style={{
+                  // ✅ Separate animation properties (no shorthand + delay conflict)
+                  animationName: "bounce",
+                  animationDuration: `${duration}s`,
+                  animationTimingFunction: "ease-in-out",
+                  animationIterationCount: "infinite",
+                  animationDelay: `${delay}s`,
+                  opacity: 0.9
+                }} 
+              />
+            );
+          })}
         </div>
       )}
 
-      {/* 🏠 Main Content */}
+      {/* 🏠 Main Content - Fixed Animation */}
       <div style={{
         position: "relative",
         zIndex: 10,
         maxWidth: "1100px",
         margin: "0 auto",
         padding: "24px 20px 40px",
-        animation: "fadeSlideUp 0.7s ease-out"
+        // ✅ Separate animation properties
+        animationName: "fadeSlideUp",
+        animationDuration: "0.7s",
+        animationTimingFunction: "ease-out",
+        animationFillMode: "forwards"
       }}>
         
         {/* Header with Brand + Logout */}
@@ -181,7 +211,7 @@ export default function Welcome({ user, type }: Props) {
           </button>
         </header>
 
-        {/* 🎉 Welcome Banner */}
+        {/* 🎉 Welcome Banner - Fixed Animation */}
         <div style={{
           background: "rgba(255,255,255,0.96)",
           backdropFilter: "blur(20px)",
@@ -190,7 +220,12 @@ export default function Welcome({ user, type }: Props) {
           marginBottom: "24px",
           border: "1px solid rgba(255,255,255,0.5)",
           boxShadow: "0 25px 80px -20px rgba(0,0,0,0.25)",
-          animation: "scaleIn 0.5s ease-out 0.1s both"
+          // ✅ Separate animation properties with delay
+          animationName: "scaleIn",
+          animationDuration: "0.5s",
+          animationTimingFunction: "ease-out",
+          animationDelay: "0.1s",
+          animationFillMode: "both"
         }}>
           <div style={{ textAlign: "center" }}>
             {/* Status Badge */}
@@ -251,7 +286,7 @@ export default function Welcome({ user, type }: Props) {
           </div>
         </div>
 
-        {/* 👤 Profile Information Card */}
+        {/* 👤 Profile Information Card - Fixed Animation */}
         <div style={{
           background: "rgba(255,255,255,0.96)",
           backdropFilter: "blur(20px)",
@@ -259,7 +294,12 @@ export default function Welcome({ user, type }: Props) {
           padding: "28px",
           border: "1px solid rgba(255,255,255,0.5)",
           boxShadow: "0 25px 80px -20px rgba(0,0,0,0.25)",
-          animation: "scaleIn 0.5s ease-out 0.2s both"
+          // ✅ Separate animation properties with delay
+          animationName: "scaleIn",
+          animationDuration: "0.5s",
+          animationTimingFunction: "ease-out",
+          animationDelay: "0.2s",
+          animationFillMode: "both"
         }}>
           <h3 style={{ 
             margin: "0 0 24px", 
@@ -346,11 +386,16 @@ export default function Welcome({ user, type }: Props) {
           </div>
         </div>
 
-        {/* 💭 Inspirational Quote */}
+        {/* 💭 Inspirational Quote - Fixed Animation */}
         <div style={{
           marginTop: "28px",
           textAlign: "center",
-          animation: "fadeSlideUp 0.6s ease-out 0.3s both"
+          // ✅ Separate animation properties with delay
+          animationName: "fadeSlideUp",
+          animationDuration: "0.6s",
+          animationTimingFunction: "ease-out",
+          animationDelay: "0.3s",
+          animationFillMode: "forwards"
         }}>
           <div style={{
             background: "rgba(255,255,255,0.15)",
@@ -377,7 +422,7 @@ export default function Welcome({ user, type }: Props) {
 
       </div>
 
-      {/* 🎵 Global Animations */}
+      {/* 🎵 Global Animations - Keyframes only (no changes needed) */}
       <style>{`
         @keyframes gradient-shift {
           0%, 100% { background-position: 0% 50%; }
