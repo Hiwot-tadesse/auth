@@ -186,20 +186,6 @@ router.get('/verify', async (req, res) => {
   }
 });
 
-// ============================================
-// POST /api/auth/resend-verification (Optional - can remove if not using verification)
-// ============================================
-// router.post('/resend-verification', async (req, res) => {
-//   // Remove this endpoint if you're not using email verification
-//   res.status(404).json({ error: 'Endpoint not available' });
-// });
 
-// ============================================
-// GET /api/auth/verify-email/:token (Optional - can remove if not using verification)
-// ============================================
-// router.get('/verify-email/:token', async (req, res) => {
-//   // Remove this endpoint if you're not using email verification
-//   res.redirect(`${config.cors.origin}/login`);
-// });
 
 module.exports = router;
